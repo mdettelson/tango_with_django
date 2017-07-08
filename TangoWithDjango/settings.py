@@ -123,4 +123,5 @@ USE_TZ = True
 # List of paths where Django can find static files
 STATICFILES_DIRS = [STATIC_DIR, ]
 
+# that forward slash is important
 STATIC_URL = '/static/'
