@@ -126,3 +126,7 @@ STATICFILES_DIRS = [STATIC_DIR, ]
 
 # that forward slash is important
 STATIC_URL = '/static/'
+
+# Media files (uploaded by users and admin)
+MEDIA_ROOT = MEDIA_DIR
+MEDIA_URL = '/media/'
