@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Rango - About</title>
+    </head>
+    <body>
+        <h1>Rango says...</h1>
+        <div>
+            here is the about page. <br/>
+            <a href='/rango'>Index</a>
+        </div>
+        <div>
+            <img src="{{ MEDIA_URL }}dog.jpg" alt="Picture of a dog" />
+        </div>
+        <div>
+            <img src="{% static "images/max.jpg" %}" alt="Picture of Max Ettelson" />
+            This tutorial has been put together by Max Ettelson
+        </div>
+    </body>
+</html>
