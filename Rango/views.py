@@ -1,7 +1,35 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 from django.shortcuts import render
-from Rango.models import Category
+from Rango.models import Category, Page
+
+
+def show_category(request, category_name_slug):
+    context_dict = {}
+    try:
+        # Can we find a category name slug with the given name?
+        # If we can't, the .get method raises a DoesNotExist exception.
+        # So the .get() method returns one model instance or raises an exception
+        category = Category.objects.get(slug=category_name_slug)
+
+        # Retrieve all of the associated pages.
+        # Note that filter() will return a list of page objects or an empty list
+        pages = Page.objects.filter(category=category)
+
+        # Adds our results list to the template context under name pages.
+        context_dict['pages'] = pages
+        # we also add the category object from
+        # the database to the context dict.
+        # We'll use this in the template to verify that the category exists.
+        context_dict['category'] = category
+    except Category.DoesNotExist:
+        # We get here if we didn't find the specified category.
+        # Don't do anything -
+        # the template will displat the "no category" message for us.
+        context_dict['category'] = None
+        context_dict['pages'] = None
+    # Render the response and return it to the client
+    return render(request, 'rango/cateogry.html', context_dict)
 
 
 def index(request):
