@@ -29,7 +29,7 @@ def show_category(request, category_name_slug):
         context_dict['category'] = None
         context_dict['pages'] = None
     # Render the response and return it to the client
-    return render(request, 'rango/cateogry.html', context_dict)
+    return render(request, 'rango/category.html', context_dict)
 
 
 def index(request):
