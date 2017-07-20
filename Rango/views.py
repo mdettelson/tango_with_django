@@ -2,6 +2,28 @@
 from __future__ import unicode_literals
 from django.shortcuts import render
 from Rango.models import Category, Page
+from Rango.forms import CategoryForm
+
+
+def add_category(request):
+    form = CategoryForm
+
+    # POST
+    if request.method == 'POST':
+        form = CategoryForm(request.POST)
+        if form.is_valid():
+            form.save(commit=True)
+            # Could send a confirmation message
+            # But instead will redirect to cateogry list
+            # at index, where the new cat should
+            # appear.
+            return index(request)
+        else:
+            # for now, printing the form errors
+            print(form.errors)
+    return render(request, 'rango/add_category.html', {'form': form})
+
+
 
 
 def show_category(request, category_name_slug):
@@ -36,7 +58,7 @@ def index(request):
     # Query the database for a list of ALL categories currently stored
     # Order the categories by no. likes in descending order.
     # Retrieve the top 5 only - or all if less than 5.
-    # Place the list in our contect_dict dictionary
+    # Place the list in our context_dict dictionary
     # that will be passed to the template engine.
     category_list = Category.objects.order_by('-likes')[:5]
 
