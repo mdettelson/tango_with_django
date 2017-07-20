@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 from django.shortcuts import render
 from Rango.models import Category, Page
-from Rango.forms import CategoryForm
+from Rango.forms import CategoryForm, PageForm
 
 
 def add_category(request):
@@ -24,6 +24,26 @@ def add_category(request):
     return render(request, 'rango/add_category.html', {'form': form})
 
 
+def add_page(request, category_name_slug):
+    try:
+        category = Category.objects.get(slug=category_name_slug)
+    except Category.DoesNotExist:
+        category = None
+
+    form = PageForm()
+    if request.method == 'POST':
+        form = PageForm(request.POST)
+        if form.is_valid():
+            if category:
+                page = form.save(commit=False)
+                page.category = category
+                page.views = 0
+                page.save()
+                return show_category(request, category_name_slug)
+        else:
+            print(form.errors)
+    context_dict = {'form': form, 'category': category}
+    return render(request, 'rango/add_page.html', context_dict)
 
 
 def show_category(request, category_name_slug):
@@ -67,7 +87,8 @@ def index(request):
     # Construct a dictionary to pass to the template engine as its context
     # Note the key boldmessage is the same as {{ boldmessage }} in the template!
     context_dict = {'categories': category_list,
-                    'pages': page_list,}
+                    'pages': page_list,
+                    }
 
     # Return a rendered response to send to the client
     # We make use of the shortcut function to make our lives easier.
